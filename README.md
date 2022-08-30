@@ -8,11 +8,24 @@ using Web 3 solutions in the same way they use Web 2.**
 
 ![LUKSense Logo](static/assets/images/logo/logo.png)
 
+### Project Name
+LUKSense
+### Creator
+Hesam Sameri
+### Creator Contact
+h.sameri[AAATTT]proton.me
+
+**a [LUKSO Hackathon](https://lukso.network/hackathon) submisson**
+
 ## Demo dApp
 
 **Demo dApp is available at [luksense.store](http://luksense.store)**
 
 LSP8 contract used in the demo: [0x763b8a43321A6D45aFbADe24Ad398460F85820cf](https://explorer.execution.l16.lukso.network/address/0x763b8a43321A6D45aFbADe24Ad398460F85820cf)
+
+## Demo video
+
+**Demo video is available at [youtu.be/UyaAmd0jKNA](https://youtu.be/UyaAmd0jKNA)**
 
 ## Features
 
