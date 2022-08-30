@@ -1,0 +1,92 @@
+{% set title = 'NFT Stat' %}
+{% set filename = 'layout-horizontal.html' %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/assets/vendors/iconly/bold.css">
+{% endblock %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        <h3>Stats of NFT: {{ name }}</h3>
+        <h5>Owner: <a href="{{ url_for('user', id=owner) }}">{{ owner }}</a></h5>
+
+        <a href="{{ url_for('nft', id=id) }}" class="btn btn-outline-primary">View NFT</a>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+
+                <div class="card p-3">
+                    <h6>Sales stat</h6>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Gross Sales</th>
+                            <th>Average Price</th>
+                            <th>Lowest Price</th>
+                            <th>Highest Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ price_table[0] if price_table[0] != None else '-' }} LYX</td>
+                            <td>{{ ('%.15f' % price_table[1]).rstrip('0').rstrip('.') if price_table[1] != None else '-' }}
+                                LYX
+                            </td>
+                            <td>{{ price_table[2] if price_table[2] != None else '-' }} LYX</td>
+                            <td>{{ price_table[3] if price_table[3] != None else '-' }} LYX</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% if purchase_count == 1 %}
+                    <div class="alert alert-light-secondary color-secondary"><i
+                            class="bi bi-exclamation-circle"></i> This NFT has been purchased only by one person.
+                    </div>
+                {% else %}
+                    <div class="alert alert-light-secondary color-secondary"><i
+                            class="bi bi-exclamation-circle"></i> This NFT has been purchased by {{ purchase_count }}
+                        people.
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="card p-3">
+                <h6>Latest users who have purchased this NFT:</h6>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price (at the time)</th>
+                            <th>Purchase Time (UTC)</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user[0] }}</td>
+                                <td>{{ user[1] }} LYX</td>
+                                <td>{{ pretty_time(user[2]) }}</td>
+                                <td>
+                                    <a href="{{ url_for('user', id=user[0]) }}">View
+                                        user</a>
+                                </td>
+                            </tr>
+                            <!--<tr>
+    <td colspan="4" id="show{{ user[0] }}" class="nft-description">
+        Description here... Description here... Description here...
+    </td>
+</tr>-->
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}

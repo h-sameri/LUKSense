@@ -1,0 +1,193 @@
+{% set title = 'User Profile' %}
+{% set filename = 'layout-horizontal.html' %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/assets/vendors/iconly/bold.css">
+{% endblock %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        <h3>User Profile</h3>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12 col-lg-12">
+                {% if user.id == current_user.id %}
+                    <div class="row">
+                        <div class="col-6 col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon purple">
+                                                <i class="iconly-boldChart"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">NFT Revenue</h6>
+                                            <h6 class="font-extrabold mb-0">{{ user.get_nft_revenue()  | format_balance }} LYX</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon blue">
+                                                <i class="iconly-boldBuy"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">NFT Expenditure</h6>
+                                            <h6 class="font-extrabold mb-0">{{ user.get_nft_expenditure()  | format_balance }} LYX</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon green">
+                                                <i class="iconly-boldPaper"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Misc.</h6>
+                                            <h6 class="font-extrabold mb-0">{{ (user.get_balance() - (user.get_nft_revenue() + user.get_nft_expenditure()))  | format_balance }}
+                                                LYX</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon red">
+                                                <i class="iconly-boldWallet"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Current Balance
+                                            </h6>
+                                            <h6 class="font-extrabold mb-0">{{ user.get_balance()  | format_balance}} LYX &nbsp;
+                                                <a href="{{ url_for('top_up') }}" style="padding: 2px"
+                                                   class="btn btn-outline-primary btn-sm m-0">
+                                                    <i class="bi-plus-circle"></i>
+                                                </a></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-12 col-lg-9">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>NFT List</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            {% for gold in trophies.get_gold() %}
+                                                <td><img height="40" width="40"
+                                                         src="{{ url_for('static', filename='img/trophy_gold.png') }}"/>
+                                                </td>
+                                            {% endfor %}
+                                            {% for silver in trophies.get_silver() %}
+                                                <td><img height="40" width="40"
+                                                         src="{{ url_for('static', filename='img/trophy_silver.png') }}"/>
+                                                </td>
+                                            {% endfor %}
+                                            {% for bronze in trophies.get_bronze() %}
+                                                <td><img height="40" width="40"
+                                                         src="{{ url_for('static', filename='img/trophy_bronze.png') }}"/>
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            {% for gold in trophies.get_gold() %}
+                                                <td><span class="kb-gold">&nbsp;&nbsp;{{ gold }}&nbsp;&nbsp;</span></td>
+                                            {% endfor %}
+                                            {% for silver in trophies.get_silver() %}
+                                                <td><span class="kb-silver">&nbsp;&nbsp;{{ silver }}&nbsp;&nbsp;</span>
+                                                </td>
+                                            {% endfor %}
+                                            {% for bronze in trophies.get_bronze() %}
+                                                <td><span class="kb-bronze">&nbsp;&nbsp;{{ bronze }}&nbsp;&nbsp;</span>
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+
+                                    {% include "pages/nft_previous_next.html" %}
+
+                                    <div>
+                                        {% include "pages/nft_table_fragment.html" %}
+                                    </div>
+
+                                    {% include "pages/nft_number_pagination.html" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12 col-lg-3">
+                <div class="card">
+                    <div class="card-body py-4 px-5">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-xl">
+                                <img src="{{ user.get_profile_image_url() }}">
+                            </div>
+                            <div class="ms-3 name">
+                                <h5 class="font-bold">{{ user.name }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    {% if user.description is not none and user.description != '' %}
+                        <div class="card-footer">
+                            <p>{{ apply_markup(user.description)|safe }}</p>
+                        </div>
+                    {% endif %}
+                    {% if user.id == current_user.id %}
+
+                    {% endif %}
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Prestige</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress progress-info">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ user.prestige }}"
+                                 style="width: {{ user.prestige*7.692 }}%"
+                                 aria-valuemin="0" aria-valuemax="13">{{ user.prestige }} of 13
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+{% block js %}
+{% endblock %}

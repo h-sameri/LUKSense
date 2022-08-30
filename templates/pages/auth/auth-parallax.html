@@ -1,0 +1,253 @@
+{% set title = 'LUKsense' %}
+
+{% extends 'layouts/auth.html' %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/assets/vendors/sweetalert2/sweetalert2.min.css">
+
+{% endblock %}
+{% set lukso_up_extension_url =
+"https://docs.lukso.tech/guides/universal-profile/browser-extension/install-browser-extension" %}
+
+{% block content %}
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-between py-3 mb-4  border-bottom">
+            <a href="/"
+               class="d-flex align-items-center col-lg-3 col-md-12 pb-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                <img src="/static/assets/images/logo/logo.png" height="65px" alt="Logo">
+            </a>
+
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 nav-pills">
+                <li class="nav-item"><a href="#lh1" class="nav-link active" aria-current="page">LUKSense</a></li>
+                <li class="nav-item"><a href="#lh2" class="nav-link">LUKSO</a></li>
+                <li class="nav-item"><a href="#lh3" class="nav-link">Open Access</a></li>
+                <li class="nav-item"><a href="#lh4" class="nav-link">Connect</a></li>
+            </ul>
+            <div class="col-md-3 text-end">
+                <a href="#lh4" class="btn btn-outline-primary me-2">Sign-in</a>
+            </div>
+        </header>
+
+        <main>
+
+            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
+                <div class="row flex-lg-row-reverse align-items-center g-5 pb-5">
+
+                    <div class="col-10 col-sm-8 col-lg-6">
+                        <img src="/static/assets/images/showcase/market.png"
+                             class="d-block mx-lg-auto img-fluid" alt="LUKSO Standards"
+                             width="400" height="551" loading="lazy">
+                    </div>
+                    <div class="col-lg-6">
+                        <h1 class="display-5 fw-bold lh-1 mb-3" id="lh1">Buy, sell, and manage decentralized
+                            licenses</h1>
+                        <p class="lead mb-4">Making use of <a
+                                href="https://docs.lukso.tech/standards/nft-2.0/LSP7-Digital-Asset" target="_blank"
+                                rel="noreferrer" class="underline">LSP7</a> and
+                            <a href="https://docs.lukso.tech/standards/nft-2.0/LSP8-Identifiable-Digital-Asset"
+                               target="_blank" rel="noreferrer" class="underline">LSP8</a> standards, LUKSense provides
+                            license-as-a-token service to everyone. Whether you're an artist or a developer you can
+                            utilize the benefits of decentralized licenses to better manage and monetize your work.</p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <a href="#lh4" class="btn btn-primary btn-lg px-4 me-md-2">Start now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="featurette-divider">
+
+            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
+                <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+
+                    <div class="col-lg-6">
+                        <h1 class="display-5 fw-bold lh-1 mb-3" id="lh2">Powered by LUKSO</h1>
+                        <p class="lead">LUKSense is built by using <a
+                                href="https://docs.lukso.tech/standards/introduction/"
+                                target="_blank" rel="noreferrer"
+                                class="text-primary-600 font-medium hover:primary-400">LUKSO standards</a>
+                            and operates on top of
+                            <a href="https://lukso.network"
+                               target="_blank" rel="noreferrer"
+                               class="text-primary-600 font-medium hover:primary-400"> LUKSO network </a>.
+                            With a Universal Profile, anyone can enjoy the full experience of decentralized licensing.
+                            The decentralized nature of the system allows every license sold to be traded freely outside
+                            of LUKSense platform.
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <a href="https://lukso.network" target="_blank"
+                               class="btn btn-primary btn-lg px-4 me-md-2">Learn more</a>
+                        </div>
+                    </div>
+                    <div class="col-10 col-sm-8 col-lg-6">
+                        <img src="/static/assets/images/showcase/LUKSO_Standards.png"
+                             class="d-block mx-lg-auto img-fluid" alt="LUKSO Standards"
+                             width="400" height="400" loading="lazy">
+                    </div>
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
+                <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+
+                    <div class="col-10 col-sm-8 col-lg-6">
+                        <img src="/static/assets/images/showcase/nft_handover.svg"
+                             class="d-block mx-lg-auto img-fluid" alt="NFT Handover"
+                             width="500" height="500" loading="lazy">
+                    </div>
+                    <div class="col-lg-6">
+                        <h1 class="display-5 fw-bold lh-1 mb-3" id="lh3">Open Access</h1>
+                        <p class="lead">
+                            LUKSence is free, opensource, and decetralized. The traces of every license created or sold
+                            are publicly available on the blockchain. With LUKSO standards, any third party can easily
+                            access licensing data and verify ownership.
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <a href="https://github.com/h-sameri/LUKSense" target="_blank"
+                               class="btn btn-primary btn-lg px-4 me-md-2">View source code
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="px-4 py-5 my-5 text-center">
+                <img class="d-block mx-auto mb-4" src="/static/assets/images/showcase/login_with_up.png" alt=""
+                     width="200"
+                     height="400">
+                <h1 class="display-5 fw-bold" id="lh4">Connect 🆙 & Start</h1>
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead">Log in to your browser extension
+                    </p>
+                    <div class="d-block">
+
+                        <button id="login-btn" class="btn btn-primary  btn-lg px-4 me-md-2"
+                                onclick="sign_with_up()">
+                                    <span class="spinner-grow spinner-grow-sm d-none" id="btn-spinner"
+                                          role="status" aria-hidden="true"></span> Sign-in with Universal Profile
+                        </button>
+                        <div class="mt-5">
+                            <p class="text-gray-600">Don't have a Universal Profile?
+                                <a href="{{ lukso_up_extension_url }}" target="_blank"
+                                   class="font-bold">Create One</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="pt-3 mt-4 text-muted border-top">
+            <p>2022 © <a href="/" class="text-black">LUKSense</a>, powered by <a
+                    href="https://lukso.network/" class="text-black">LUKSO</a>.</p>
+        </footer>
+
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="/static/assets/js/lukso/utils.js"></script>
+    <script src="/static/assets/vendors/sweetalert2/sweetalert2.min.js"></script>
+
+    <script type="text/javascript">
+
+        // Account Application
+        async function app() {
+
+            if (await connectWeb3() && await checkNetwork()) {
+                const web3 = new Web3(window.ethereum);
+                let accounts = await ethereum.request({method: "eth_accounts"});
+                if (accounts.length > 0) {
+                    let message_to_sign = ''
+                    const UP_ADDRESS = accounts[0].toLowerCase();
+                    const options2 = {
+                        headers: {"Content-Type": "application/json; charset=utf-8"},
+                        method: 'POST',
+                        body: JSON.stringify({
+                            address: UP_ADDRESS
+                        })
+                    };
+                    let signed_message = null;
+                    await fetch('/get_login_message', options2)
+                        .then(response => response.json()).then(response => {
+                            message_to_sign = response.message;
+                            console.log('message_to_sign', message_to_sign)
+                            web3.eth.sign(response.message, UP_ADDRESS).then(response => {
+                                signed_message = response.signature
+                                console.log('signature', signed_message)
+                                const params = {
+                                    address: UP_ADDRESS,
+                                    signature: signed_message
+                                };
+                                const options = {
+                                    headers: {"Content-Type": "application/json; charset=utf-8"},
+                                    method: 'POST',
+                                    body: JSON.stringify(params)
+                                };
+                                fetch('/check_login', options)
+                                    .then(response => response.json()).then(response => {
+                                    console.log('check_login', response);
+                                    if (response.is_successful) {
+                                        location.reload()
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Error in login, please try again."
+                                        })
+                                        location.reload()
+                                    }
+                                });
+                            }).catch(err => {
+                                console.log(err);
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Please sign the message to login."
+                                })
+                            })
+                        });
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Can't find any Universal Profile, create your profile through extension first."
+                    })
+                }
+
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Make sure you installed Universal Profile Extension and Chosen L16 Network."
+                })
+            }
+        };
+
+        function sign_with_up() {
+            if (window.ethereum) {
+                $('#login-btn').prop('disabled', true);
+                $('#btn-spinner').removeClass('d-none');
+                ethereum.request({method: "eth_requestAccounts"}).then(res => {
+                    app().then()
+                }).finally(result => {
+                    $('#btn-spinner').addClass('d-none');
+                    $('#login-btn').prop('disabled', false);
+                });
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Please first install Universal Profile Extension."
+                })
+            }
+        }
+    </script>
+    {#    Check Network#}
+    <script>
+        let el = function (id) {
+            return document.querySelector(id);
+        };
+    </script>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% set title = 'Latest NFTs' %}
+{% set filename = 'layout-horizontal.html' %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/assets/vendors/iconly/bold.css">
+{% endblock %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        <h3>Latest NFTs</h3>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+
+                <form class="form form-horizontal" method="POST"
+                              action="{{ url_for('search_arbiter') }}">
+                    {{ form.csrf_token }}
+                    {{ render_field(form.raw_query) }}
+                    {{ render_field(form.mode) }}
+                    {{ render_field(form.file_type) }}
+                    <button class="btn btn-primary btn-block shadow-lg mt-2">Search</button>
+                    <a href="{{ url_for('latest_nfts', custom_from=1, mode=mode, raw_query=None) }}"
+                       class="btn btn-outline-secondary btn-sm float-end mt-2">Reset</a>
+                </form>
+            </div>
+            <div class="col-12 mt-5">
+
+                <div class="card p-3">
+
+                    <ul class="nav nav-tabs mb-4 border-bottom">
+                        <li class="nav-item">
+                            <a class="nav-link  {% if mode == 'default' %}active{% endif %}" aria-current="page"
+                               href="{{ url_for('latest_nfts', custom_from=1, mode='default'+appendix, raw_query=user_query) }}">All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  {% if mode == 'top' %}active{% endif %}" aria-current="page"
+                               href="{{ url_for('latest_nfts', custom_from=1, mode='top'+appendix, raw_query=user_query) }}">Top</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  {% if mode == 'free' %}active{% endif %}" aria-current="page"
+                               href="{{ url_for('latest_nfts', custom_from=1, mode='free'+appendix, raw_query=user_query) }}">Free</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  {% if mode == 'preview' %}active{% endif %}" aria-current="page"
+                               href="{{ url_for('latest_nfts', custom_from=1, mode='preview'+appendix, raw_query=user_query) }}">With
+                                Preview</a>
+                        </li>
+                    </ul>
+
+
+                    {% include "pages/nft_previous_next.html" %}
+
+                    <div>
+                            {% include "pages/nft_table_fragment.html" %}
+                    </div>
+
+                    {% include "pages/nft_number_pagination.html" %}
+
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}

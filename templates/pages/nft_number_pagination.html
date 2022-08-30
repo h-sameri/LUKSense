@@ -1,0 +1,60 @@
+<div>
+    <br>
+    {% if custom_from > 5 %}
+        {% set start = custom_from - 3 %}
+    {% else %}
+        {% set start = 1 %}
+    {% endif %}
+    {% if request.endpoint == 'purchased' %}
+        {% set last = ((total - 1)/row_per_page)|int + 1 %}
+    {% else %}
+        {% set last = ((nfts['hits']['total']['value'] - 1)/row_per_page)|int + 1 %}
+    {% endif %}
+    {% if custom_from < last - 4 %}
+        {% set end = custom_from + 3 %}
+    {% else %}
+        {% set end = last %}
+    {% endif %}
+    {% if start > 1 %}
+        {% if request.endpoint == 'user' %}
+            <a href="{{ url_for(request.endpoint, id=user.id, custom_from=1) }}" class="btn btn-primary">1</a>
+        {% elif request.endpoint == 'purchased' %}
+            <a href="{{ url_for(request.endpoint, custom_from=1) }}" class="btn btn-primary">1</a>
+        {% else %}
+            <a href="{{ url_for(request.endpoint, custom_from=1, mode=mode+appendix, raw_query=user_query) }}"
+               class="btn btn-primary">1</a>
+        {% endif %}
+        ...
+    {% endif %}
+    {% if end > 1 %}
+        {% for page_num in range(start, end + 1) %}
+            {% if page_num == custom_from %}
+                <a disabled>{{ page_num }}</a>
+            {% else %}
+                {% if request.endpoint == 'user' %}
+                    <a href="{{ url_for(request.endpoint, id=user.id, custom_from=page_num) }}"
+                       class="btn btn-primary" {{ 'disabled' if page_num > (max_result_window/row_per_page)|int }}>{{ page_num }}</a>
+                {% elif request.endpoint == 'purchased' %}
+                    <a href="{{ url_for(request.endpoint, custom_from=page_num) }}"
+                       class="btn btn-primary" {{ 'disabled' if page_num > (max_result_window/row_per_page)|int }}>{{ page_num }}</a>
+                {% else %}
+                    <a href="{{ url_for(request.endpoint, custom_from=page_num, mode=mode+appendix, raw_query=user_query) }}"
+                       class="btn btn-primary" {{ 'disabled' if page_num > (max_result_window/row_per_page)|int }}>{{ page_num }}</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if end < last %}
+        ...
+        {% if request.endpoint == 'user' %}
+            <a href="{{ url_for(request.endpoint, id=user.id, custom_from=last) }}"
+               class="btn btn-primary" {{ 'hidden' if last > (max_result_window/row_per_page)|int }}>{{ last }}</a>
+        {% elif request.endpoint == 'purchased' %}
+            <a href="{{ url_for(request.endpoint, custom_from=last) }}"
+               class="btn btn-primary" {{ 'hidden' if last > (max_result_window/row_per_page)|int }}>{{ last }}</a>
+        {% else %}
+            <a href="{{ url_for(request.endpoint, custom_from=last, mode=mode+appendix, raw_query=user_query) }}"
+               class="btn btn-primary" {{ 'hidden' if last > (max_result_window/row_per_page)|int }}>{{ last }}</a>
+        {% endif %}
+    {% endif %}
+</div>

@@ -1,0 +1,96 @@
+{% set title = 'Help' %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Help</h3>
+                </div>
+            </div>
+        </div>
+
+        <section class="section">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+
+                        </div>
+                        <div class="card-body">
+                            <h3>Voting</h3>
+                            <p>Voting is one of the fundamentals of LUKSense. There is no need for human moderators to
+                                check
+                                the activities. Nor are any specific rules. Everybody whose prestige is greater than
+                                zero
+                                can vote on NFTs. Votes are the rules and the moderators of the community and that's why
+                                sincere voting is of vital importance.</p>
+                            <p>In fact, voting authenticity has been thoroughly taken into consideration. It is a
+                                primary
+                                component of the system's backend algorithm. To protect the community from malicious
+                                parties,
+                                destructive voting patterns are detected and proper action is taken. The logic behind
+                                it,
+                                is quite simple: "If your opinion is always different, you don't belong to the
+                                community."
+                                By the way, you don't have to worry if you don't have malicious intentions. Obviously,
+                                it's
+                                all right to have a different opinion occasionally.</p>
+                            <h3>Prestige</h3>
+                            <p>As the name suggests, prestige indicates how favourably you're regarded in the community.
+                                Newcomers start with <i>prestige=0</i> and based on their activity, it may go up or
+                                down.
+                                Prestige is assigned based on a rather complicated calculation. There are several
+                                activities
+                                that can affect your prestige including but not limited to:</p>
+                            <h4>Positive:</h4>
+                            <ol>
+                                <li>Getting good votes on your NFTs.</li>
+                                <li>Sincere voting.</li>
+                            </ol>
+                            <h4>Negative:</h4>
+                            <ol>
+                                <li>Getting bad votes on your NFTs.</li>
+                                <li>Not voting on most of your purchased NFTs.</li>
+                                <li>Cluster voting e.g. creating multiple accounts to vote up each other.</li>
+                                <li>Repeated outlier voting e.g. trying to damage the prestige of others by bad votes.
+                                </li>
+                                <li>Selfish voting e.g. refusing to vote on good NFTs, but voting on bad NFTs.</li>
+                            </ol>
+                            <p>Basically, higher prestige means higher privileges. There are certain actions that
+                                require a minimum prestige. It's also worth noting that prestige value grows
+                                logarithmically,
+                                therefore getting <i>prestige=6</i> isn't three times harder than getting
+                                <i>prestige=2</i>
+                                (it's way much harder).</p>
+                            <h3>Trophies</h3>
+                            <p>Trophies are displayed on profiles. Here is a list of all trophies with details:</p>
+                            <h4 style="display: inline;">Alturist: </h4>
+                            <h5 style="display: inline;">
+                                <span class="kb-bronze"><i>X=10</i> for bronze (won by {{ help_dic.get('trophy_stat').get_alturist_bronze() }} so far)</span>
+                                <span style="color: lightgray;"> ||| </span>
+                                <span class="kb-silver"><i>X=100</i> for silver (won by {{ help_dic.get('trophy_stat').get_alturist_silver() }} so far)</span>
+                                <span style="color: lightgray;"> ||| </span>
+                                <span class="kb-gold"><i>X=1000</i> for gold (won by {{ help_dic.get('trophy_stat').get_alturist_gold() }} so far)</span>
+                            </h5>
+                            <p>Own <b>X</b> free NFTs. Empty NFTs don't count. Extremely low-rated and malicious
+                                NFTs don't count either.</p>
+                            <h4 style="display: inline;">Pundit: </h4>
+                            <h5 style="display: inline;">
+                                <span class="kb-bronze"><i>X=100</i> for bronze (won by {{ help_dic.get('trophy_stat').get_pundit_bronze() }} so far)</span>
+                                <span style="color: lightgray;"> ||| </span>
+                                <span class="kb-silver"><i>X=1000</i> for silver (won by {{ help_dic.get('trophy_stat').get_pundit_silver() }} so far)</span>
+                                <span style="color: lightgray;"> ||| </span>
+                                <span class="kb-gold"><i>X=10000</i> for gold (won by {{ help_dic.get('trophy_stat').get_pundit_gold() }} so far)</span>
+                            </h5>
+                            <p>Rate <b>X</b> NFTs. Outliers don't count (and repeated outlying votes may negatively
+                                effect the voter's prestige). A conspicuous example for outlier is a one-star malicious
+                                rating on an NFT rated five-star genuine by all other voters.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

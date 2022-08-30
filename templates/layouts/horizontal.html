@@ -1,0 +1,177 @@
+{% from 'bootstrap5/form.html' import render_form,render_field %}
+{% set menu_items = [{
+    "name": "Dashboard",
+    "url": url_for("index"),
+    "icon": "grid"
+},{
+    "name": "Purchased NFTs",
+    "url":  url_for('purchased'),
+    "icon": "collection"
+},{
+    "name": "New NFT",
+    "url":  url_for('new_nft'),
+    "icon": "cloud-plus"
+},{
+    "name": "Latest NFTs",
+    "url":  url_for('latest_nfts'),
+    "icon": "clock-history"
+}
+] %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - {{ site_title }}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="/static/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/assets/css/app.css">
+    <link rel="stylesheet" href="/static/assets/css/custom.css">
+    <link rel="shortcut icon" href="/static/assets/images/favicon.svg" type="image/x-icon">
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+<div id="app">
+    <div id="main" class="layout-horizontal">
+        <header class="mb-5">
+            <div class="header-top">
+                <div class="container">
+                    <div class="logo">
+                        <a href="/"><img src="/static/assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+                    </div>
+                    <div class="header-top-right">
+                        {% if current_user.is_authenticated %}
+                            <div class="dropdown dropdown-toggle user-dropdown">
+                                <a href="#" class="user-dropdown d-flex dropend" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <div class="avatar avatar-md2">
+                                        <img src="{{ current_user.get_profile_image_url() }}" alt="Avatar">
+                                    </div>
+                                    <div class="text">
+                                        <h6 class="user-dropdown-name">{{ current_user.name }}</h6>
+                                        <p class="user-dropdown-status text-sm text-muted">
+                                            Balance: {{ current_user.balance  | format_balance }} LYX</p>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg"
+                                    aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="{{ url_for('user', id=current_user.get_id()) }}">My
+                                        Account</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('top_up') }}">Top up</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <!-- Burger button responsive -->
+                        <a href="#" class="burger-btn d-block d-xl-none">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <nav class="main-navbar">
+                <div class="container">
+                    <ul>
+                        {% set maxSubmenuItemY = 8 %}
+                        {% for menuItem in menu_items %}
+                            {% if not menuItem.isTitle %}
+                                <li
+                                        class="menu-item {{ 'active' if (menuItem.url == filename or (menuItem.key and filename.startswith(menuItem.key))) }} {{ 'has-sub' if menuItem.submenu }}">
+                                    <a href="{{ menuItem.url if menuItem.url!=undefined else '#' }}" class='menu-link'>
+                                        <i class="bi bi-{{ menuItem.icon }}"></i>
+                                        <span>{{ menuItem.name }}</span>
+                                    </a>{% if menuItem.submenu %}
+                                    <div
+                                            class="submenu">
+                                        <!-- Wrap to submenu-group-wrapper if you want 3-level submenu. Otherwise remove it. -->
+                                        <div class="submenu-group-wrapper">
+                                            {% for sub in menuItem.submenu %}
+                                                {% if loop.index % maxSubmenuItemY == 1 %}
+                                                    <ul class="submenu-group">
+                                                {% endif %}
+                                            <li
+                                                    class="submenu-item {{ 'active' if sub.url == filename }} {{ 'has-sub' if sub.submenu }}">
+                                                <a href="{{ sub.url if sub.url!=undefined else '#' }}"
+                                                   class='submenu-link'>{{ sub.name }}</a>
+
+                                                {% if sub.submenu %}
+                                                    <!-- 3 Level Submenu -->
+                                                    <ul class="subsubmenu">
+                                                        {% for subsub in sub.submenu %}
+                                                            <li class="subsubmenu-item ">
+                                                                <a href="{{ subsub.url }}"
+                                                                   class="subsubmenu-link">{{ subsub.name }}</a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </li>
+                                            {% if loop.index % maxSubmenuItemY == 0 %}
+                                                </ul>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>{% endif %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+
+                        {% if current_user!=null and current_user.is_authenticated and current_user.get_announcement()[0] > 0 %}
+
+                            <li class="menu-item  ">
+                                <a href="{{ url_for('announcements') }}" class="menu-link">
+                                    <i class="bi bi-inbox"></i>
+                                    <span>Announcements <span
+                                            class="badge bg-warning">{{ current_user.get_announcement()[0] }}</span></span>
+                                </a>
+                            </li>
+
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+
+        </header>
+
+        <div class="content-wrapper container">
+            {% block content %}{% endblock %}
+        </div>
+
+        <footer>
+            <div class="container">
+                <div class="footer clearfix py-1 mb-0 text-muted border-top">
+                    <div class="float-start">
+                        <div class="nav-scroller py-1 mb-2">
+                            <nav class="nav d-flex justify-content-between">
+                                <a class="p-2 link-secondary" href="/announcements">Announcements</a>
+                                <a class="p-2 link-secondary" href="/faq">FAQ</a>
+                                <a class="p-2 link-secondary" href="/help">Help</a>
+                            </nav>
+                        </div>
+
+                    </div>
+                    <div class="float-end">
+                        <div class="py-1 mb-2">
+                            <div class="p-2"> 2022 © <a href="/">LUKSense</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<script src="/static/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+{% block js %}{% endblock %}
+<script src="/static/assets/js/pages/horizontal-layout.js"></script>
+</body>
+
+</html>

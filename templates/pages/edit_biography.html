@@ -1,0 +1,51 @@
+{% set title = 'Edit Biography' %}
+{% set filename = 'form-element-textarea.html' %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Edit Biography</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ url_for('user', id=current_user.get_id()) }}">User
+                                Profile</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit Biography</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <section class="section">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+
+                        </div>
+                        <form class="form form-horizontal" method="POST"
+                              action="{{ url_for('edit_biography') }}">
+
+                            <div class="card-body">
+                                <div class="form-group mb-3">
+                                    {{ form.csrf_token }}
+                                    {{ render_field(form.biography) }}
+
+                                    {#                            <label for="Bio" class="form-label">{{ form.biography.label }}</label>#}
+                                    {#                            <textarea class="form-control" id="Bio" rows="3"></textarea>#}
+                                </div>
+                                <button type="submit" class="btn btn-primary block">Edit Biography</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

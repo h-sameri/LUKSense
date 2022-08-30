@@ -1,0 +1,21 @@
+werkzeug==2.0.3
+elastic-apm
+flask_login
+flask
+wtforms
+elasticsearch
+Flask-WTF
+psycopg2
+psutil
+blinker
+bootstrap-flask
+celery
+gunicorn
+cryptography
+redis
+web3
+python-magic-bin==0.4.14
+#for python magic
+#linux:   sudo apt-get install libmagic1
+#windows:  pip install python-magic-bin
+#osx: brew install libmagic   #works only with python-magic-bin==0.4.14

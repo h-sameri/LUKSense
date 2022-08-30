@@ -1,0 +1,33 @@
+{% set title = 'Purchased NFTs' %}
+{% set filename = 'layout-horizontal.html' %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/assets/vendors/iconly/bold.css">
+{% endblock %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        <h3>Purchased NFTs</h3>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+
+
+                <div class="card p-3">
+                    {% include "pages/nft_previous_next.html" %}
+
+                    <div>
+                            {% include "pages/nft_table_fragment.html" %}
+                    </div>
+
+                    {% include "pages/nft_number_pagination.html" %}
+
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}

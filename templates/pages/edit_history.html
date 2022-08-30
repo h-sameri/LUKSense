@@ -1,0 +1,69 @@
+{% set title = 'Edit History' %}
+{% set filename = 'layout-horizontal.html' %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/assets/vendors/iconly/bold.css">
+{% endblock %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+
+    <div class="page-heading">
+        <h3>Edit History</h3>
+        <p>Current name: <a href="{{ url_for('nft', id=nft[0]) }}">{{ nft[1] }}</a></p>
+        <p>Creation time: {{ nft[4] }}</p>
+        {% if nft[2] is not none %}
+            <p>Current description: {{ apply_markup(nft[2])|safe }}</p>
+        {% else %}
+            <p>Current description: {{ nft[2] }}</p>
+        {% endif %}
+        <p>Current price: {{ nft[3] }} LYX</p>
+
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+
+                <div class="card p-3">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Edit Time (UTC)</th>
+                            <th>Reason</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for edit in edits %}
+                            {% if loop.index is even %}
+                                <tr>
+                                    {% else %}
+                                <tr>
+                            {% endif %}
+                        <td>{{ pretty_time(edit[0]) }}</td>
+                        <td>{{ edit[1] }}</td>
+                        <td>
+                            <a href="#show{{ loop.index }}" class="btn btn-outline-primary">Details</a>
+                        </td>
+                        </tr>
+                            <tr>
+                                <td colspan="3" id="show{{ loop.index }}" class="nft-description">
+                                    <div class="nft-description-span">
+                                        <p>Previous name: {{ edit[2] }}</p>
+                                        <p>Previous description: {{ edit[3] }}</p>
+                                        <p>Previous price: {{ edit[4] }} LYX</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% set title = 'Latest Announcements' %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Latest Announcements</h3>
+                </div>
+            </div>
+        </div>
+
+        <section class="section">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+
+                        </div>
+
+                        <div class="card-body">
+                            <ul>
+                                {% for announcement in announcements %}
+                                    <li>
+                                        <a href="{{ url_for('announcement', id=announcement.get_id()) }}">{{ announcement.get_title() }}
+                                            ({{ pretty_time(announcement.get_creation_time()) }} UTC)</a></li>
+                                {% else %}
+                                    <div class="alert alert-secondary">
+                                        <p>There is no new announcement.</p>
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

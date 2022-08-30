@@ -1,0 +1,139 @@
+<table class="table">
+
+    <thead>
+    <tr>
+        <th>NFT</th>
+        <th>Price</th>
+        <th>Quality</th>
+        <th>Honesty</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for nft_full in nfts['hits']['hits'] %}
+        <tr>
+    {% set nft = nft_full['_source'] %}
+    <td><a href="{{ url_for('nft', id=nft['id']) }}"><b>{{ nft['name'] }}</b></a></td>
+    <td>{{ nft['price'] }} LYX</td>
+    <td>
+        {% for star in range(nft['average_quality']) %}
+            <span style="color: darkblue;">★</span>
+            {% if loop.last %}
+                <br>
+            {% endif %}
+
+        {% endfor %}
+
+        <span> ({{ nft['quality_count'] }}
+            {% if nft['quality_count'] == 1 %}
+                vote)
+            {% else %}
+                votes)
+            {% endif %}
+            </span>
+    </td>
+    <td>
+        {% if nft['total_count'] > 0 %}
+            {% if nft['genuine_percent'] > nft['misleading_percent']
+                        and nft['genuine_percent'] > nft['malicious_percent'] %}
+                {% set max_percent = 'genuine_percent' %}
+            {% else %}
+                {% if nft['misleading_percent'] > nft['malicious_percent'] %}
+                    {% set max_percent = 'misleading_percent' %}
+                {% else %}
+                    {% set max_percent = 'malicious_percent' %}
+                {% endif %}
+            {% endif %}
+            {% if max_percent == 'malicious_percent' %}
+                <span style="color: darkred;">Malicious: %{{ nft['malicious_percent'] }}</span>
+            {% endif %}
+            {% if max_percent == 'misleading_percent' %}
+                <span style="color: darkorange;">Misleading: %{{ nft['misleading_percent'] }}</span>
+            {% endif %}
+            {% if max_percent == 'genuine_percent' %}
+                <span style="color: darkgreen;">Genuine: %{{ nft['genuine_percent'] }}</span>
+            {% endif %}
+            <br>
+        {% endif %}
+        <span> ({{ nft['total_count'] }}
+            {% if nft['total_count'] == 1 %}
+                vote)
+            {% else %}
+                votes)
+            {% endif %}
+            </span>
+    </td>
+    <td>
+        <div class="dropdown">
+            <button class="btn btn-primary btn-sm  dropdown-toggle" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Actions ...
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a href="{{ url_for('nft_stats', id=nft['id']) }}" class="dropdown-item">
+                    Stats</a></li>
+                <li>
+                    <button class="dropdown-item" type="button" data-bs-toggle="modal"
+                            data-bs-target="#show{{ nft['id'] }}"
+                            aria-expanded="false" aria-controls="show{{ nft['id'] }}">Details
+                    </button>
+                </li>
+
+
+                {% if current_user is not none %}
+                    {% if nft['owner'] == current_user.get_id() %}
+                        <a href="{{ url_for('edit_nft', id=nft['id']) }}" class="dropdown-item">Edit</a>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+
+
+        <!-- Vertically Centered modal Modal -->
+        <div class="modal fade" id="show{{ nft['id'] }}" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+                 role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title white" id="exampleModalCenterTitle">{{ nft['name'] }}
+                        </h5>
+                        <button type="button" class="close" data-bs-dismiss="modal"
+                                aria-label="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="nft-description-span">
+                            <h6>Owner: {{ nft['owner'] }}</h6>
+                            <h6>File count: {{ nft['files_count']['t'] }} (Video: {{ nft['files_count']['v'] }},
+                                Photo: {{ nft['files_count']['p'] }}, Document: {{ nft['files_count']['d'] }},
+                                Archive: {{ nft['files_count']['a'] }}, Other: {{ nft['files_count']['o'] }})</h6>
+                            <h6>Total size: {{ pretty_size(nft['files_size']) }}</h6>
+                            <h6>Creation Time: {{ pretty_time(nft['creation_time']) }} UTC</h6>
+                            <h6>Description: {{ nft['description'] }}</h6>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-secondary"
+                                data-bs-dismiss="modal">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

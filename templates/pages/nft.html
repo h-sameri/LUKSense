@@ -1,0 +1,374 @@
+{% set title = 'NFT Contents' %}
+{% set filename = 'layout-horizontal.html' %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/assets/vendors/iconly/bold.css">
+{% endblock %}
+
+{% extends 'layouts/horizontal.html' %}
+{% block content %}
+    <div class="page-heading">
+        {% if nft_status == 'PREVIEW' %}
+            <h3>Preview of <a href="{{ url_for('nft', id=preview_of) }}">{{ name }}</a></h3>
+        {% else %}
+            <h3>{{ name }}</h3>
+        {% endif %}
+        <h5>NFT ID: #{{ id }}
+            {% if nft_status != 'PREVIEW' %}
+                <h5>Contract Address: {% if lsp7 %}
+                    <a href="https://explorer.execution.l16.lukso.network/address/{{ lsp7 }}"
+                       target="_blank">{{ lsp7 }}</a>{% else %}
+                    Deploying...{% endif %}
+                </h5>
+            {% endif %}
+            {% if description is not none %}
+                <p class="text-subtitle text-muted">Description: {{ apply_markup(description)|safe }}</p>
+            {% endif %}
+
+            <div class="buttons">
+                <a href="{{ url_for('nft_stats', id=id) }}"
+                   class="btn btn-outline-primary">Stats</a>
+                {% if preview is none %}
+                    {% if user_status == 'OWNER' %}
+                        <p class="text-subtitle text-muted">Provide preview so that other users have a taste
+                            before
+                            purchasing your NFT.</p>
+
+                        <a href="{{ url_for('enable_preview', id=id) }}"
+                           class="btn btn-outline-primary">Enable Preview</a>
+                    {% else %}
+                        <button class="btn btn-outline-primary" disabled>No Preview</button>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('nft', id=preview) }}"
+                       class="btn btn-outline-primary">View Preview</a>
+                {% endif %}
+                {% if last_edit_time is none %}
+                    <button class="btn btn-outline-primary" disabled>No Edits</button>
+
+                {% else %}
+                    <a href="{{ url_for('edit_history', id=id) }}" class="btn btn-outline-primary">Edit History</a>
+                {% endif %}
+                {% if user_status == 'OWNER' %}
+                    <a href="{{ url_for('edit_nft', id=id) }}" class="btn btn-outline-primary">Edit</a>
+                {% endif %}
+            </div>
+
+
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+
+                {% if nft_status != 'PREVIEW' %}
+                    <div class="row">
+                        <div class="col-12">
+
+                            {% set file_type = namespace(v=0, p=0, d=0, a=0, o=0) %}
+                            {% for file in files %}
+                                {% if file[5] == 'v' %}
+                                    {% set file_type.v = file_type.v + 1 %}
+                                {% elif file[5] == 'p' %}
+                                    {% set file_type.p = file_type.p + 1 %}
+                                {% elif file[5] == 'd' %}
+                                    {% set file_type.d = file_type.d + 1 %}
+                                {% elif file[5] == 'a' %}
+                                    {% set file_type.a = file_type.a + 1 %}
+                                {% else %}
+                                    {% set file_type.o = file_type.o + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-6 col-lg-6 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon red">
+                                                <i class="iconly-boldWallet"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Price</h6>
+                                            <h6 class="font-extrabold mb-0">{{ price | format_balance }} LYX</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-lg-6 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon blue">
+                                                <i class="iconly-boldUser"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Owner</h6>
+                                            <h6 class="font-extrabold mb-0"><a
+                                                    href="{{ url_for('user', id=owner) }}">{{ owner_name }}</a></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon purple">
+                                                <i class="iconly-boldPaper"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Files Count</h6>
+                                            <h6 class="font-extrabold mb-0">{{ files|length }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">Video: {{ file_type.v }}</li>
+                                        <li class="list-inline-item">Photo: {{ file_type.p }}</li>
+                                        <li class="list-inline-item">Document: {{ file_type.d }}</li>
+                                        <li class="list-inline-item">Archive: {{ file_type.a }}</li>
+                                        <li class="list-inline-item">Other: {{ file_type.o }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <div class="card">
+                                <div class="card-body px-3 py-4-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon green">
+                                                <i class="iconly-boldActivity"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Quality</h6>
+                                            <h6 class="font-extrabold mb-0">{{ feedback_obj.quality_count }}
+                                                vote(s)</h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer">
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">
+                                            {% for star in range(feedback_obj.average_quality) %}
+                                                <span style="color: darkblue;">★</span>
+                                            {% endfor %}</li>
+                                        <li class="list-inline-item">Honesty: {{ feedback_obj.total_count }} vote(s)
+                                        </li>
+                                        <li class="list-inline-item text-danger">Malicious:
+                                            %{{ feedback_obj.malicious_percent }}</li>
+                                        <li class="list-inline-item text-warning">Misleading:
+                                            %{{ feedback_obj.misleading_percent }}</li>
+                                        <li class="list-inline-item text-success">Genuine:
+                                            %{{ feedback_obj.genuine_percent }}</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {% if description is not none %}
+
+                    {% endif %}
+
+                {% endif %}
+            </div>
+            {#style from here#}
+            {% if user_status == 'OWNER' %}
+                <div class="col-12">
+
+                    <form class="form form-horizontal" enctype="multipart/form-data"
+                          method="POST" action="{{ url_for('upload', id=id) }}">
+
+                        <div class="card-body">
+                            <div class="form-group mb-3">
+                                {{ upload_form.csrf_token }}
+                                {{ render_field( upload_form.files ) }}
+
+                            </div>
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle"></i> Double check your files
+                                before uploading; there is no DELETE or UNDO!
+                            </div>
+                            <button type="submit" class="btn btn-primary block">Upload Files</button>
+                        </div>
+                    </form>
+                </div>
+            {% elif user_status == 'BUYER' %}
+                <div class="col-12">
+                    <div class="card-body">
+                        {% if files %}
+                            <div class="alert alert-light-primary color-primary"><i class="bi bi-cash"></i> This NFT
+                                costs
+                                <strong>{{ price | format_balance }} LYX</strong>. Once purchased,
+                                you can access all the files inside.
+                            </div>
+                            {% if feedback_obj.total_count>=2 and feedback_obj.malicious_percent>=65 %}
+                                <div class="alert alert-light-warning color-warning"><i
+                                        class="bi bi-exclamation-triangle"></i>
+                                    This NFT has been marked as malicious by other users. Purchase at
+                                    your own risk!
+                                </div>
+                                <div class="card-body">
+                                    <form class="form form-horizontal" method="POST" action="{{ url_for('purchase') }}">
+                                        <div>
+                                            <div class="form-group mb-3">
+                                                {{ purchase_form.csrf_token }}
+                                                {{ render_field(purchase_form.nft_id) }}
+                                            </div>
+                                            <button type="submit" class="btn btn-primary block">Purchase this NFT
+                                                [{{ price | format_balance }}
+                                                LYX]
+                                            </button>
+
+                                        </div>
+                                    </form>
+                                </div>
+
+                            {% else %}
+                                <form class="form form-horizontal" method="POST" action="{{ url_for('purchase') }}">
+                                    <div class="form-group mb-3">
+                                        {{ purchase_form.csrf_token }}
+                                        {{ render_field(purchase_form.nft_id) }}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary block">Purchase this NFT
+                                        [{{ price | format_balance }} LYX]
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <div class="alert alert-info color-secondary"><i
+                                    class="bi bi-exclamation-circle"></i> This NFT is empty yet. Come back later and
+                                purchase it when there is at least one file
+                                inside.
+                            </div>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% elif user_status == 'PURCHASER' %}
+                {% if nft_status == 'PREVIEW' %}
+                    <div class="col-12">
+                        {% if files %}
+                            <div class="alert alert-info color-secondary"><i
+                                    class="bi bi-exclamation-circle"></i> Previews are open and downloadable by
+                                everyone.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-light-secondary color-secondary"><i
+                                    class="bi bi-exclamation-circle"></i> This preview is currently empty. Come back
+                                later.
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="col-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Rate this NFT</h4>
+                            </div>
+                            <div class="card-body">
+                                <form class="form form-horizontal" method="POST"
+                                      action="{{ url_for('rate_nft', id=id) }}">
+
+                                    <div>
+                                        <div class="form-group mb-3">
+                                            {{ feedback_from.csrf_token }}
+                                            {{ render_field(feedback_from.quality) }}
+                                            {{ render_field(feedback_from.honesty) }}
+                                        </div>
+                                        <div class="alert alert-light-secondary color-secondary"><i
+                                                class="bi bi-star"></i>Your
+                                            Ratings may affect the owner's prestige as well
+                                        </div>
+                                        <button type="submit" class="btn btn-primary block">Submit</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+            {#style to here#}
+            {#then add the table#}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>File</th>
+                                    <th>Size</th>
+                                    <th>Creation time (UTC)</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for file in files %}
+                                    <tr>
+                                        <td>{{ file[1] }}</td>
+                                        <td>{{ pretty_size(file[2]) }}</td>
+                                        <td>{{ pretty_time(file[3]) }}</td>
+                                        <td>
+                                            {% if user_status == 'PURCHASER' or user_status == 'OWNER' %}
+                                                {#
+                                                    {% set token = generate_token(current_user, file[4], file[1], file[3]) %}
+                                                    {% if token is not none %}
+                                                        <a href="{{ token }}" class="btn btn-primary">Download</a>
+                                                    {% else %}
+                                                        <a href="{{ url_for('file', hash=file[0]) }}"
+                                                            class="btn btn-primary">Download</a>
+                                                    {% endif %}
+                                                #}
+                                                <a href="{{ url_for('file', hash=file[0]) }}"
+                                                   class="btn btn-primary">Download</a>
+                                            {% else %}
+                                                <button class="btn btn-primary" disabled>Download</button>
+                                            {% endif %}
+                                            {% if user_status == 'OWNER' and nft_status != 'PREVIEW' %}
+                                                {% if preview is none %}
+                                                    <button class="btn btn-primary" disabled>Add to Preview
+                                                    </button>
+                                                {% else %}
+                                                    <a href="{{ url_for('add_to_preview', file=file[0], nft=id) }}"
+                                                       class="btn btn-primary">Add to Preview</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <!--<tr>
+                <td colspan="4" id="show{{ file[0] }}" class="nft-description">
+                    Description here... Description here... Description here...
+                </td>
+            </tr>-->
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </div>
+{% endblock %}
+{% block js %}
+{% endblock %}

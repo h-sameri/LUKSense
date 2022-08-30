@@ -1,0 +1,27 @@
+<div>
+    {% if custom_from > 1 %}
+        <div style="float:left;">
+            {% if request.endpoint == 'user' %}
+                <a href="{{ url_for(request.endpoint, id=user.id, custom_from=custom_from - 1) }}"><h5><< previous page</h5></a>
+            {% elif request.endpoint == 'purchased' %}
+                <a href="{{ url_for(request.endpoint, custom_from=custom_from - 1) }}"><h5><< previous page</h5></a>
+            {% else %}
+                <a href="{{ url_for(request.endpoint, custom_from=custom_from - 1, mode=mode+appendix, raw_query=user_query) }}"><h5><< previous page</h5></a>
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if request.endpoint == 'purchased' %}
+        {% set last = total/row_per_page  %}
+    {% else %}
+        {% set last = nfts['hits']['total']['value']/row_per_page  %}
+    {% endif %}
+    {% if last > custom_from and custom_from < (max_result_window/row_per_page)|int %}
+        {% if request.endpoint == 'user' %}
+            <div style="float:right;"><a href="{{ url_for(request.endpoint, id=user.id, custom_from=custom_from + 1) }}"><h5>next page >></h5></a></div>
+        {% elif request.endpoint == 'purchased' %}
+            <div style="float:right;"><a href="{{ url_for(request.endpoint, custom_from=custom_from + 1) }}"><h5>next page >></h5></a></div>
+        {% else %}
+            <div style="float:right;"><a href="{{ url_for(request.endpoint, custom_from=custom_from + 1, mode=mode+appendix, raw_query=user_query) }}"><h5>next page >></h5></a></div>
+        {% endif %}
+    {% endif %}
+</div>

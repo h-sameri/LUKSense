@@ -1,0 +1,13 @@
+{% set title = 'action result' %}
+{% set filename = 'message.html' %}
+{% extends 'layouts/horizontal.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2>{{ message }}</h2>
+            <br>
+            <a class="btn btn-primary" href="{{ anchor }}">{{ anchor_text }}</a>
+        </div>
+    </div>
+{% endblock %}
