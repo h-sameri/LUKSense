@@ -12,10 +12,8 @@ using Web 3 solutions in the same way they use Web 2.**
 LUKSense
 ### Creator
 Hesam Sameri
-### Creator Contact
-h.sameri[AAATTT]proton.me
 
-**a [LUKSO Hackathon](https://lukso.network/hackathon) submisson**
+**[LUKSO Build 🆙 #1 Hackathon winner](https://medium.com/@lukso/lukso-build-1-hackathon-meet-the-winners-6824f744b610)**
 
 ## Demo dApp
 
